@@ -14,15 +14,22 @@ class Engine:
 
         if len(self.possibleWords) > 10000:
             return "TAREI"
+        if len(self.possibleWords) <= 1:
+            return self.possibleWords[0]
 
-        file = open("output.txt", "w")
+        # file = open("output.txt", "w")
 
-        entropies = []
-        index = 0
+        # entropies = []
+        # index = 0
+        best_word = "aaaaa"
+        max = 0
         for word in self.possibleWords:
-            index += 1
-            entropies.append((word, self.computeEntropy(word)))
-            max = 0
+            entropy = self.computeEntropy(word)
+            if max < entropy:
+                max = entropy
+                best_word = word
+
+        return best_word
 
         # entropies.sort(key=lambda x: x[1], reverse=True)
 
@@ -44,3 +51,10 @@ class Engine:
             entropy = entropy + p * (-log2(p))
 
         return entropy
+
+    def updateWords(self, word, value):
+        new_list = []
+        for secretWord in self.possibleWords:
+            if compareWords(secretWord, word) == value:
+                new_list.append(secretWord)
+        self.possibleWords = new_list

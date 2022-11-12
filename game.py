@@ -52,11 +52,12 @@ def toBase3(value):
 class Game:
     dataSource = DataSource()
 
-    def __init__(self):
-        self.secretWord = None
-        self.chooseRandomWord()
-        print(self.secretWord)
-        print("A random word has been chosen!")
+    def __init__(self, word=None):
+        self.secretWord = word
+        if self.secretWord is None:
+            self.chooseRandomWord()
+        #print(self.secretWord)
+        #print("A random word has been chosen!")
 
     def chooseRandomWord(self):
         self.secretWord = self.dataSource.getRandomWord()
