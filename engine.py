@@ -12,6 +12,9 @@ class Engine:
 
     def chooseWord(self):
 
+        if len(self.possibleWords) > 10000:
+            return "TAREI"
+
         file = open("output.txt", "w")
 
         entropies = []
@@ -19,15 +22,14 @@ class Engine:
         for word in self.possibleWords:
             index += 1
             entropies.append((word, self.computeEntropy(word)))
-            if index % 500 == 0:
-                print(index)
+            max = 0
 
-        entropies.sort(key=lambda x: x[1], reverse=True)
+        # entropies.sort(key=lambda x: x[1], reverse=True)
 
-        for pair in entropies:
-            print(pair, file=file)
-
-        print(entropies)
+        # for pair in entropies:
+        #     print(pair, file=file)
+        #
+        # print(entropies)
 
     def computeEntropy(self, word):
         buckets = [0] * 243

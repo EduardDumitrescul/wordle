@@ -22,22 +22,17 @@ def compareWords(word, guess):
     assert len(guess) == 5
 
     code = [0] * 5
-    used = [False] * 5
+    chrset = set()
     for i in range(5):
         if word[i] == guess[i]:
             code[i] = 2
-            used[i] = True
+        chrset.add(word[i])
 
     for i in range(5):
-        if code[i] != 0:
+        if code[i] == 2:
             continue
-        for j in range(5):
-            if code[j] == 2:
-                continue
-            if guess[i] == word[j] and not used[j]:
-                code[i] = 1
-                used[j] = True
-                break
+        if guess[i] in chrset:
+            code[i] = 1
 
     value = 0
     for i in code:
