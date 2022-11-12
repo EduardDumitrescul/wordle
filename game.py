@@ -1,4 +1,4 @@
-from DataSource import DataSource
+from dataSource import DataSource
 
 
 def wordIsValid(word):
@@ -22,18 +22,22 @@ def compareWords(word, guess):
     assert len(guess) == 5
 
     code = [0] * 5
+    used = [False] * 5
     for i in range(5):
         if word[i] == guess[i]:
             code[i] = 2
+            used[i] = True
 
     for i in range(5):
         if code[i] != 0:
             continue
         for j in range(5):
-            if code[j] != 0:
+            if code[j] == 2:
                 continue
-            if word[i] == guess[j]:
-                code[j] = 1
+            if guess[i] == word[j] and not used[j]:
+                code[i] = 1
+                used[j] = True
+                break
 
     value = 0
     for i in code:
@@ -58,7 +62,6 @@ class Game:
         self.chooseRandomWord()
         print(self.secretWord)
         print("A random word has been chosen!")
-        self.play()
 
     def chooseRandomWord(self):
         self.secretWord = self.dataSource.getRandomWord()
