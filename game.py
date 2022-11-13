@@ -1,3 +1,5 @@
+import sys
+
 from dataSource import DataSource
 
 
@@ -52,15 +54,22 @@ def toBase3(value):
 class Game:
     dataSource = DataSource()
 
-    def __init__(self, word=None):
+    def __init__(self, queue, word=None,):
         self.secretWord = word
         if self.secretWord is None:
             self.chooseRandomWord()
+        self.queue = queue
+
+        sys.stdin = open(0)
         #print(self.secretWord)
         #print("A random word has been chosen!")
 
     def chooseRandomWord(self):
         self.secretWord = self.dataSource.getRandomWord()
+
+    def getGuessFromQueue(self):
+        guess = self.queue.get()
+        return guess
 
     def play(self):
         tries = 0
@@ -75,5 +84,6 @@ class Game:
                 continue
 
             value = compareWords(self.secretWord, guess)
+            self.queue.put((guess, value))
 
             print(toBase3(value))

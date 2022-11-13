@@ -7,8 +7,21 @@ from game import compareWords
 class Engine:
     dataSource = DataSource()
 
-    def __init__(self):
+    def __init__(self, queue):
         self.possibleWords = Engine.dataSource.words
+        self.queue = queue
+        self.isFinished = False
+
+        print(self.chooseWord())
+        self.queueListener()
+
+    def queueListener(self):
+        while True:
+            word, value = self.queue.get()
+            if value == 242:
+                break
+            self.updateWords(word, value)
+            print(self.chooseWord())
 
     def chooseWord(self):
 
@@ -23,7 +36,7 @@ class Engine:
         # index = 0
         best_word = "aaaaa"
         max = 0
-        for word in self.possibleWords:
+        for word in DataSource.words:
             entropy = self.computeEntropy(word)
             if max < entropy:
                 max = entropy
@@ -58,3 +71,5 @@ class Engine:
             if compareWords(secretWord, word) == value:
                 new_list.append(secretWord)
         self.possibleWords = new_list
+        if len(self.possibleWords) == 1:
+            self.isFinished = True
